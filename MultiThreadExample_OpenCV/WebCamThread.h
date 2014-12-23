@@ -54,9 +54,14 @@ protected:
 	CaptureData images;
 	
 	
+	//別スレッドのメインループの関数
 	//元のEasyThreadTempleteのWorker関数を
 	//継承しても良いし、しなくても良い(今回は継承していない)
 	void Worker(const int cameraIndex=0);
+
+	//メインスレッドとやり取りしないけどメンバ変数として持っておきたい物や
+	//その他関数をここに書く
+
 };
 
 #endif
