@@ -1,8 +1,8 @@
 #include "WebCamThread.h"
 
 int main(){
-	/*
-	//�ʃX���b�h���N������
+	
+	//別スレッドを起動する
 	WebCamThread thread;
 	thread.InitAndRounch();
 	
@@ -10,21 +10,21 @@ int main(){
 	cv::namedWindow("webcam");
 	cv::namedWindow("negaposi");
 
-	//�J�����̃X���b�h�̏������o����܂ł̎��Ԃ�
-	//�҂��Ă��K�v������Bflag�ŊǗ�����̂��ǂ��Ǝv���B
-	//����͎蔲����2�b�ԑ҂��ɂ����B
+	//カメラのスレッドの準備が出来るまでの時間を
+	//待ってやる必要がある。flagで管理するのが良いと思う。
+	//今回は手抜きで2秒間待つ事にした。
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	//���������C�����[�v�̂���
+	//ここがメインループのつもり
 	while (true)
 	{
-		//���C���X���b�h���ŁA�ʃX���b�h�̌v�Z���ʂ��擾����
-		//std::mutex�ŃX���b�h�Z�[�t�ɃA�N�Z�X�ł���֐�������Ă���̂�
-		//������ʂ��Ă̂ݍs���B
+		//メインスレッド内で、別スレッドの計算結果を取得する
+		//std::mutexでスレッドセーフにアクセスできる関数を作っているので
+		//そこを通してのみ行う。
 		CaptureData mainthreadImg=thread.GetCamImage();
 
-		//�󂯎������̓��C���X���b�h�ł�肽�����Ƃ�����
-		//����͒P���ɕ\���������s��
+		//受け取った後はメインスレッドでやりたいことをする
+		//今回は単純に表示だけを行う
 		cv::imshow("webcam", mainthreadImg.raw);
 		cv::imshow("negaposi", mainthreadImg.negaposi);
 		if(mainthreadImg.loopCounter%100==0){
@@ -36,12 +36,12 @@ int main(){
 		}
 	}
 	
-	//�I���O�ɃX���b�h���V���b�g�_�E������
+	//終了前にスレッドをシャットダウンする
 	thread.Shutdown();
-	//�X���b�h�̃V���b�g�_�E�����I���܂ł̎��Ԃ�҂�
-	//�蔲����3�b���炢�҂��ɂ����B
+	//スレッドのシャットダウンが終わるまでの時間を待つ
+	//手抜きで3秒くらい待つ事にした。
 	std::this_thread::sleep_for(std::chrono::seconds(3));
-	*/
-	TESTCODE_EASY_THREAD_TEMPLETE();
+	
+	//TESTCODE_EASY_THREAD_TEMPLETE();
 	return 0;
 }
